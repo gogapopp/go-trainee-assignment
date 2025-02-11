@@ -1,10 +1,14 @@
 # go-trainee-assignment
-создать .env из .env.example
 ## Протокол
 
 Описан в файле [schema.yaml](schema.yaml) и [schema.json](schema.json).
 
 ## Как запустить (с докером)
+
+создать .env из .env.example
+```bash
+cp .env.example .env
+```
 
 ```bash
 docker-compose up --build

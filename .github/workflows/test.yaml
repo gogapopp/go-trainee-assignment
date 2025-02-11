@@ -7,27 +7,26 @@ on:
 
 name: Test
 jobs:
-  lint:
-    name: runner / golangci-lint
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
-    - name: Check out
-      uses: actions/checkout@v4 
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.24'
-        cache: true  
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache: true
 
-    - name: Install staticcheck
-      run: go install honnef.co/go/tools/cmd/staticcheck@latest
+      - name: Run tests
+        run: |
+          go test -cover ./...
+        env:
+          GOFLAGS: "-mod=readonly"  # Для безопасности
+          
 
-    - name: Run staticcheck
-      run: staticcheck ./...
-      
-    - name: Run vet
-      run: go vet ./...
     
  
  
