@@ -1,4 +1,4 @@
-FROM golang:1.22
+FROM golang:1.24
 
 WORKDIR ${GOPATH}/avito-shop/
 COPY . ${GOPATH}/avito-shop/
