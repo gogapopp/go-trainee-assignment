@@ -27,7 +27,7 @@ linters:
     - durationcheck
     - errorlint
     - exhaustive
-    - exportloopref
+    - copyloopvar
     - funlen
     - gci
     - gocognit
@@ -41,7 +41,6 @@ linters:
     - goprintffuncname
     - gosec
     - govet
-    - ifshort
     - importas
     - ineffassign
     - lll
@@ -56,7 +55,6 @@ linters:
     - rowserrcheck
     - sqlclosecheck
     - staticcheck
-    - structcheck
     - stylecheck
     - tagliatelle
     - thelper
@@ -64,7 +62,6 @@ linters:
     - unconvert
     - unparam
     - unused
-    - varcheck
     - wastedassign
     - whitespace
 
