@@ -4,6 +4,6 @@ dcup:
 dcdown:
 	@docker-compose down
 
-run: docker-compose-up
+run: dcup
 
-stop: docker-compose-down
+stop: dcdown

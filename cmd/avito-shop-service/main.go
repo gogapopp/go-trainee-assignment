@@ -24,6 +24,7 @@ func main() {
 		logger = must(logger.New())
 		config = must(config.New(envPath))
 	)
+	defer logger.Sync()
 
 	srv := &http.Server{
 		Addr:    config.HTTPConifg.Addr,
@@ -31,6 +32,7 @@ func main() {
 	}
 
 	go func() {
+		logger.Info("Server started")
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			logger.Fatalf("listen: %s\n", err)
 		}

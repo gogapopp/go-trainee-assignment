@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -19,6 +20,6 @@ func newHTTPConfig() (*httpConfig, error) {
 	}
 
 	return &httpConfig{
-		Addr: port,
+		Addr: fmt.Sprintf(":%s", port),
 	}, nil
 }
