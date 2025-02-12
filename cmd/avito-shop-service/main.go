@@ -12,19 +12,25 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/config"
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/logger"
+	"github.com/gogapopp/go-trainee-assignment/internal/repository/postgres"
 )
 
 const envPath = ".env"
 
 func main() {
+	ctx := context.Background()
+
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
 	var (
 		logger = must(logger.New())
 		config = must(config.New(envPath))
+
+		repository = must(postgres.New(config.PGConfig.DSN))
 	)
 	defer logger.Sync()
+	defer repository.Close(ctx)
 
 	srv := &http.Server{
 		Addr:              config.HTTPConifg.Addr,
