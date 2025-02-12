@@ -11,7 +11,7 @@ const jwtSecret = "JWT_SECRET"
 type Config struct {
 	HTTPConifg *httpConfig
 	PGConfig   *pgConfig
-	JWT_SECRET string
+	JWTSecret  string
 }
 
 func New(path string) (*Config, error) {
@@ -20,10 +20,7 @@ func New(path string) (*Config, error) {
 		return nil, err
 	}
 
-	pgCfg, err := newPGConfig()
-	if err != nil {
-		return nil, err
-	}
+	pgCfg := newPGConfig()
 
 	httpCfg, err := newHTTPConfig()
 	if err != nil {
@@ -33,6 +30,6 @@ func New(path string) (*Config, error) {
 	return &Config{
 		HTTPConifg: httpCfg,
 		PGConfig:   pgCfg,
-		JWT_SECRET: os.Getenv(jwtSecret),
+		JWTSecret:  os.Getenv(jwtSecret),
 	}, nil
 }

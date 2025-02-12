@@ -17,7 +17,7 @@ type pgConfig struct {
 	DSN string
 }
 
-func newPGConfig() (*pgConfig, error) {
+func newPGConfig() *pgConfig {
 	var dsn string
 
 	dsn = fmt.Sprintf(
@@ -31,5 +31,5 @@ func newPGConfig() (*pgConfig, error) {
 
 	return &pgConfig{
 		DSN: dsn,
-	}, nil
+	}
 }

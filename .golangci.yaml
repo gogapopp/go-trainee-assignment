@@ -21,8 +21,7 @@ linters:
   enable:
     - asciicheck
     - bodyclose
-    - deadcode
-    - depguard
+    - unused
     - dogsled
     - dupl
     - durationcheck
@@ -41,7 +40,6 @@ linters:
     - goheader
     - goprintffuncname
     - gosec
-    - gosimple
     - govet
     - ifshort
     - importas
@@ -55,7 +53,6 @@ linters:
     - nolintlint
     - prealloc
     - predeclared
-    - revive
     - rowserrcheck
     - sqlclosecheck
     - staticcheck

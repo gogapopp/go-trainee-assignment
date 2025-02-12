@@ -27,8 +27,11 @@ func main() {
 	defer logger.Sync()
 
 	srv := &http.Server{
-		Addr:    config.HTTPConifg.Addr,
-		Handler: router,
+		Addr:              config.HTTPConifg.Addr,
+		Handler:           router,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
 	}
 
 	go func() {
