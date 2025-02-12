@@ -1,7 +1,7 @@
-docker-compose-up:
+dcup:
 	@docker-compose up --build
 
-docker-compose-down:
+dcdown:
 	@docker-compose down
 
 run: docker-compose-up
