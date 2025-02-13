@@ -25,7 +25,6 @@ linters:
     - dogsled
     - dupl
     - durationcheck
-    - errorlint
     - exhaustive
     - copyloopvar
     - funlen

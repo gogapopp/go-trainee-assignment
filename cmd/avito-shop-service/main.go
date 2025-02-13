@@ -10,8 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	httpserver "github.com/gogapopp/go-trainee-assignment/internal/http-server"
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/config"
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/logger"
 	"github.com/gogapopp/go-trainee-assignment/internal/repository/postgres"
@@ -27,9 +26,6 @@ const (
 
 func main() {
 	ctx := context.Background()
-
-	router := chi.NewRouter()
-	router.Use(middleware.Logger)
 
 	var (
 		logger = must(logger.New())
@@ -48,13 +44,7 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	srv := &http.Server{
-		Addr:              config.HTTPConifg.Addr,
-		Handler:           router,
-		ReadHeaderTimeout: 5 * time.Second,
-		ReadTimeout:       10 * time.Second,
-		WriteTimeout:      10 * time.Second,
-	}
+	srv := httpserver.New(config)
 
 	go func() {
 		logger.Info("Server started")
