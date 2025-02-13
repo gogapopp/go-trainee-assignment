@@ -7,7 +7,11 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func New(dsn string) (*pgx.Conn, error) {
+type storage struct {
+	db *pgx.Conn
+}
+
+func New(dsn string) (*storage, error) {
 	const op = "internal.repository.postgres.postgres.New"
 
 	ctx := context.Background()
@@ -22,5 +26,11 @@ func New(dsn string) (*pgx.Conn, error) {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	return conn, nil
+	return &storage{
+		db: conn,
+	}, nil
+}
+
+func (s *storage) Close(ctx context.Context) {
+	s.db.Close(ctx)
 }

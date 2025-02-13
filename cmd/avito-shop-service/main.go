@@ -14,6 +14,7 @@ import (
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/config"
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/logger"
 	"github.com/gogapopp/go-trainee-assignment/internal/repository/postgres"
+	"github.com/gogapopp/go-trainee-assignment/internal/service"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -36,6 +37,8 @@ func main() {
 			fmt.Sprintf("file://%s", migrationsPath),
 			config.PGConfig.DSN,
 		))
+
+		service = service.New(logger, repository, config.JWTSecret)
 	)
 	defer logger.Sync()
 	defer repository.Close(ctx)
@@ -44,7 +47,7 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	srv := httpserver.New(config)
+	srv := httpserver.New(config, logger, service)
 
 	go func() {
 		logger.Info("Server started")
