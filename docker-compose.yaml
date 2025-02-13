@@ -27,8 +27,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: shop
     volumes:
-      # "./migrations/init.sql" - путь к миграциям БД
-      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
@@ -39,5 +38,9 @@ services:
       start_period: 10s
     networks:
       - internal
+
 networks:
   internal:
+
+volumes:  
+  postgres_volume:

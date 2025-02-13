@@ -21,11 +21,11 @@ func newPGConfig() *pgConfig {
 	var dsn string
 
 	dsn = fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv(dbHost),
-		os.Getenv(dbPort),
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		os.Getenv(dbUser),
 		os.Getenv(dbPassword),
+		os.Getenv(dbHost),
+		os.Getenv(dbPort),
 		os.Getenv(dbName),
 	)
 

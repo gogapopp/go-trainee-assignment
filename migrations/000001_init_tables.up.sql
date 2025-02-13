@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    coins INTEGER NOT NULL DEFAULT 1000 CHECK (coins >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS items (
+    id SERIAL PRIMARY KEY, 
+    name TEXT UNIQUE NOT NULL,
+    price INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_coin_history (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    amount INTEGER NOT NULL,
+    from_user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    to_user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS user_inventory (
+    id SERIAL PRIMARY KEY,  
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    item_id INTEGER REFERENCES items(id) ON DELETE CASCADE,
+    quantity INTEGER NOT NULL
+);

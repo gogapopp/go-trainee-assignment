@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -13,9 +15,15 @@ import (
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/config"
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/logger"
 	"github.com/gogapopp/go-trainee-assignment/internal/repository/postgres"
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
-const envPath = ".env"
+const (
+	envPath        = ".env"
+	migrationsPath = "./migrations"
+)
 
 func main() {
 	ctx := context.Background()
@@ -28,9 +36,17 @@ func main() {
 		config = must(config.New(envPath))
 
 		repository = must(postgres.New(config.PGConfig.DSN))
+		migrations = must(migrate.New(
+			fmt.Sprintf("file://%s", migrationsPath),
+			config.PGConfig.DSN,
+		))
 	)
 	defer logger.Sync()
 	defer repository.Close(ctx)
+
+	if err := migrations.Up(); err != nil && err != migrate.ErrNoChange {
+		logger.Fatal(err)
+	}
 
 	srv := &http.Server{
 		Addr:              config.HTTPConifg.Addr,
@@ -47,6 +63,7 @@ func main() {
 		}
 	}()
 
+	// graceful shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
@@ -67,7 +84,7 @@ func main() {
 
 func must[T any](v T, err error) T {
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return v
 }
