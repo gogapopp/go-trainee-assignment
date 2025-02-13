@@ -36,7 +36,9 @@ func (s *storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, e
 	}
 	// if user exists
 	var passwordHashFromDB string
-	err = s.db.QueryRow(ctx, "SELECT id, password_hash FROM users WHERE username = $1", user.Username).Scan(&userID, &passwordHashFromDB)
+	err = s.db.QueryRow(ctx,
+		"SELECT id, password_hash FROM users WHERE username = $1", user.Username).
+		Scan(&userID, &passwordHashFromDB)
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}

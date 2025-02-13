@@ -9,7 +9,7 @@ import (
 
 var errUnknownClaimsType = errors.New("unknown claims type")
 
-const TOKEN_EXP = time.Minute * 10
+const tokenExp = time.Minute * 10
 
 type tokenClaims struct {
 	userID int
@@ -21,7 +21,7 @@ func GenerateJWTToken(jwtSecret string, userID int) (string, error) {
 		userID,
 		jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(TOKEN_EXP)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(tokenExp)),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -37,7 +37,7 @@ func ParseJWTToken(jwtSecret, userJWTToken string) (int, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, jwt.ErrSignatureInvalid
 		}
-		return []byte([]byte(jwtSecret)), nil
+		return []byte(jwtSecret), nil
 	})
 	if err != nil {
 		return 0, err
