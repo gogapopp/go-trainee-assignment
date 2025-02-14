@@ -27,7 +27,6 @@ linters:
     - durationcheck
     - exhaustive
     - copyloopvar
-    - funlen
     - gci
     - gocognit
     - goconst

@@ -7,7 +7,6 @@ import (
 	"github.com/gogapopp/go-trainee-assignment/internal/models"
 )
 
-//nolint:funlen
 func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoResponse, error) {
 	const op = "internal.repository.postgres.info.GetUserInfo"
 
