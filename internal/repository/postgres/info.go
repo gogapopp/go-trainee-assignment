@@ -7,6 +7,7 @@ import (
 	"github.com/gogapopp/go-trainee-assignment/internal/models"
 )
 
+//nolint:funlen
 func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoResponse, error) {
 	const op = "internal.repository.postgres.info.GetUserInfo"
 
@@ -17,6 +18,7 @@ func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoRespo
 		return models.InfoResponse{}, fmt.Errorf("%s: %w", op, err)
 	}
 
+	// user inventory
 	rows, err := s.db.Query(ctx,
 		`SELECT i.name, ui.quantity FROM user_inventory ui
         JOIN items i ON ui.item_id = i.id
@@ -39,8 +41,8 @@ func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoRespo
 	// transactions when user is receiver
 	receivedRows, err := s.db.Query(ctx,
 		`SELECT u.username, uch.amount FROM user_coin_history uch
-        JOIN users u ON uch.from_user_id = u.id
-        WHERE uch.to_user_id = $1`,
+	    JOIN users u ON uch.from_user_id = u.id
+	    WHERE uch.to_user_id = $1`,
 		userID,
 	)
 	if err != nil {
@@ -59,7 +61,7 @@ func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoRespo
 	// transactions when user is sender
 	sentRows, err := s.db.Query(ctx,
 		`SELECT u.username, uch.amount FROM user_coin_history uch
-        JOIN users u ON uch.to_user_id = u.id
+	    JOIN users u ON uch.to_user_id = u.id
 		WHERE uch.from_user_id = $1`,
 		userID,
 	)
