@@ -36,7 +36,7 @@ func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoRespo
 		info.Inventory = append(info.Inventory, item)
 	}
 
-	// transactions when user is reciever
+	// transactions when user is receiver
 	receivedRows, err := s.db.Query(ctx,
 		`SELECT u.username, uch.amount FROM user_coin_history uch
         JOIN users u ON uch.from_user_id = u.id

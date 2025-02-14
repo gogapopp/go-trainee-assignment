@@ -8,19 +8,19 @@ import (
 	"github.com/gogapopp/go-trainee-assignment/internal/models"
 )
 
-func (a *Service) AuthUser(ctx context.Context, req models.AuthRequest) (string, error) {
+func (s *Service) AuthUser(ctx context.Context, req models.AuthRequest) (string, error) {
 	const op = "internal.service.auth.AuthUser"
 
-	if err := a.validator.Struct(req); err != nil {
+	if err := s.validator.Struct(req); err != nil {
 		return "", fmt.Errorf("%s: %w", op, err)
 	}
 
-	userID, err := a.repo.AuthUser(ctx, req)
+	userID, err := s.repo.AuthUser(ctx, req)
 	if err != nil {
 		return "", fmt.Errorf("%s: %w", op, err)
 	}
 
-	token, err := jwt.GenerateJWTToken(a.jwtSecret, userID)
+	token, err := jwt.GenerateJWTToken(s.jwtSecret, userID)
 	if err != nil {
 		return "", fmt.Errorf("%s: %w", op, err)
 	}

@@ -56,7 +56,8 @@ func (s *storage) SendCoins(ctx context.Context, senderID int, req models.SendCo
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	_, err = tx.Exec(ctx, `INSERT INTO user_coin_history (from_user_id, to_user_id, amount) VALUES ($1, $2, $3)`, senderID, recipientID, req.Amount)
+	_, err = tx.Exec(ctx, `INSERT INTO user_coin_history (from_user_id, to_user_id, amount) VALUES ($1, $2, $3)`,
+		senderID, recipientID, req.Amount)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}

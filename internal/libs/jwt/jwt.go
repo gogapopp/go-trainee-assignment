@@ -15,7 +15,7 @@ var (
 const tokenExp = time.Minute * 100000000
 
 type tokenClaims struct {
-	UserID int `json:"user_id"`
+	UserID int
 	jwt.RegisteredClaims
 }
 
@@ -40,7 +40,6 @@ func ParseJWTToken(jwtSecret, tokenString string) (int, error) {
 			return []byte(jwtSecret), nil
 		},
 	)
-
 	if err != nil {
 		if errors.Is(err, jwt.ErrTokenExpired) {
 			return 0, errTokenExpired
