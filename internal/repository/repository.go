@@ -3,6 +3,9 @@ package repository
 import "errors"
 
 var (
-	ErrUserExists         = errors.New("user already exists")
 	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrItemNotFound       = errors.New("item not found")
+	ErrInsufficientFunds  = errors.New("insufficient funds")
+	ErrUserNotFound       = errors.New("user not found")
+	ErrSameUser           = errors.New("cant send to yourself")
 )

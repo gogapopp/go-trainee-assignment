@@ -20,6 +20,8 @@ docker-compose up --build
 docker-compose-down
 ```
 
+Средний SLI для api/auth у меня около 400ms я думаю это из за brcypt
+
 <!-- Постман коллекция: [documenter.getpostman.com](https://documenter.getpostman.com/view/2612412453/2sA123123DpC)  
 
 ## Generating code from a specification

@@ -19,7 +19,7 @@ type authService interface {
 
 func AuthHandler(logger *zap.SugaredLogger, authService authService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "internal.http-server.handler.auth.authHandler"
+		const op = "internal.http-server.handlers.auth.AuthHandler"
 		ctx := r.Context()
 
 		logger = logger.With("req_id", middleware.GetReqID(ctx))

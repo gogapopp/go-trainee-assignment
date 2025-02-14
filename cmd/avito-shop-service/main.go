@@ -37,8 +37,6 @@ func main() {
 			fmt.Sprintf("file://%s", migrationsPath),
 			config.PGConfig.DSN,
 		))
-
-		service = service.New(logger, repository, config.JWTSecret)
 	)
 	defer logger.Sync()
 	defer repository.Close(ctx)
@@ -46,6 +44,8 @@ func main() {
 	if err := migrations.Up(); err != nil && err != migrate.ErrNoChange {
 		logger.Fatal(err)
 	}
+
+	service := service.New(repository, config.JWTSecret)
 
 	srv := httpserver.New(config, logger, service)
 
@@ -62,7 +62,7 @@ func main() {
 	<-quit
 	logger.Info("Shutdown Server...")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
 		logger.Fatalf("Server Shutdown: %s", err)
