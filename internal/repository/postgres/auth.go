@@ -2,27 +2,22 @@ package postgres
 
 import (
 	"context"
+	"crypto/sha256"
 	"errors"
 	"fmt"
 
 	"github.com/gogapopp/go-trainee-assignment/internal/models"
 	"github.com/gogapopp/go-trainee-assignment/internal/repository"
 	"github.com/jackc/pgx/v5"
-	"golang.org/x/crypto/bcrypt"
 )
-
-const bcryptCost = 12
 
 func (s *Storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, error) {
 	const op = "internal.repository.postgres.auth.AuthUser"
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcryptCost)
-	if err != nil {
-		return 0, fmt.Errorf("%s: %w", op, err)
-	}
+	hashedPassword := s.generatePasswordHash(user.Password)
 
 	var userID int
-	err = s.DB.QueryRow(ctx,
+	err := s.DB.QueryRow(ctx,
 		"INSERT INTO users(username, password_hash) VALUES($1, $2) ON CONFLICT (username) DO NOTHING RETURNING id",
 		user.Username, string(hashedPassword),
 	).Scan(&userID)
@@ -43,9 +38,15 @@ func (s *Storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, e
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(passwordHashFromDB), []byte(user.Password)); err != nil {
+	if passwordHashFromDB != hashedPassword {
 		return 0, fmt.Errorf("%s: %w", op, repository.ErrInvalidCredentials)
 	}
 
 	return userID, nil
+}
+
+func (s *Storage) generatePasswordHash(password string) string {
+	hash := sha256.New()
+	_, _ = hash.Write([]byte(password))
+	return fmt.Sprintf("%x", hash.Sum([]byte(s.passSecret)))
 }

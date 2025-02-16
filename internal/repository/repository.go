@@ -8,4 +8,5 @@ var (
 	ErrInsufficientFunds  = errors.New("insufficient funds")
 	ErrUserNotFound       = errors.New("user not found")
 	ErrSameUser           = errors.New("cant send to yourself")
+	ErrNoInfo             = errors.New("user doesnt have info")
 )

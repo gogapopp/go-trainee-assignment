@@ -2,9 +2,12 @@ package postgres
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/gogapopp/go-trainee-assignment/internal/models"
+	"github.com/gogapopp/go-trainee-assignment/internal/repository"
+	"github.com/jackc/pgx/v5"
 )
 
 func (s *Storage) GetUserInfo(ctx context.Context, userID int) (models.InfoResponse, error) {
@@ -25,6 +28,9 @@ func (s *Storage) GetUserInfo(ctx context.Context, userID int) (models.InfoRespo
 		userID,
 	)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return models.InfoResponse{}, fmt.Errorf("%s: %w", op, repository.ErrNoInfo)
+		}
 		return models.InfoResponse{}, fmt.Errorf("%s: %w", op, err)
 	}
 	defer rows.Close()

@@ -19,8 +19,13 @@ docker-compose up --build
 ```bash
 docker-compose-down
 ```
+## Документация запросов в постмане
 
-Средний SLI для api/auth у меня около 400ms я думаю это из за brcypt
+https://documenter.getpostman.com/view/26679053/2sAYXEFJfz
+
+Я использовал для хеширования паролей bcrypt, но из за этого SLI был >400ms, я заменил на обычное хеширование sha256 стало <50ms
+
+Для запуска интеграционных тестов репозитория надо поменять значение в .env DATABASE_HOST с db на localhost
 
 <!-- Постман коллекция: [documenter.getpostman.com](https://documenter.getpostman.com/view/2612412453/2sA123123DpC)  
 
@@ -36,3 +41,5 @@ oapi-gen:
 	@oapi-codegen -package=handler -generate="chi-server,types,spec" api.yaml > internal/handler/api.gen.go
 
 https://github.com/avito-tech/tech-internship/tree/main/Tech%20Internships/Backend/Backend-trainee-assignment-winter-2025 -->
+
+<!-- {"level":"error","ts":1739669209.4378111,"caller":"handlers/info.go:34","msg":"internal.http-server.handlers.info.InfoHandler: %!w(*fmt.wrapError=&{internal.service.info.GetUserInfo: internal.repository.postgres.info.GetUserInfo: no rows in result set 0xc000324ee0}) -->

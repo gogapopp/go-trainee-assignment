@@ -8,10 +8,11 @@ import (
 )
 
 type Storage struct {
-	DB *pgx.Conn
+	DB         *pgx.Conn
+	passSecret string
 }
 
-func New(dsn string) (*Storage, error) {
+func New(dsn string, passSecret string) (*Storage, error) {
 	const op = "internal.repository.postgres.postgres.New"
 
 	ctx := context.Background()
@@ -27,6 +28,7 @@ func New(dsn string) (*Storage, error) {
 	}
 
 	return &Storage{
-		DB: conn,
+		DB:         conn,
+		passSecret: passSecret,
 	}, nil
 }

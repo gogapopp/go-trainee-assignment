@@ -1,5 +1,5 @@
-// package with integration tests for postgres repository
-package intergration
+// package with integration tests for handlers
+package integration
 
 import (
 	"fmt"
@@ -8,8 +8,6 @@ import (
 
 	"github.com/gogapopp/go-trainee-assignment/internal/libs/config"
 )
-
-const envPath = "../../../../.env"
 
 func getDSN(t *testing.T) string {
 	user := os.Getenv("DATABASE_USER")
@@ -25,10 +23,11 @@ func getDSN(t *testing.T) string {
 		)
 	}
 
+	envPath := "../../../../.env"
+
 	cfg, err := config.New(envPath)
 	if err != nil {
 		t.Fatalf("failed to load config: %v", err)
 	}
-
 	return cfg.PGConfig.DSN
 }

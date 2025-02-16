@@ -32,7 +32,7 @@ func main() {
 		logger = must(logger.New())
 		config = must(config.New(envPath))
 
-		repository = must(postgres.New(config.PGConfig.DSN))
+		repository = must(postgres.New(config.PGConfig.DSN, config.PassSecret))
 		migrations = must(migrate.New(
 			fmt.Sprintf("file://%s", migrationsPath),
 			config.PGConfig.DSN,

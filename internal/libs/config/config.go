@@ -6,12 +6,16 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const jwtSecret = "JWT_SECRET"
+const (
+	jwtSecret  = "JWT_SECRET"
+	passSecret = "PASS_SECRET"
+)
 
 type Config struct {
 	HTTPConifg *httpConfig
 	PGConfig   *pgConfig
 	JWTSecret  string
+	PassSecret string
 }
 
 func New(path string) (*Config, error) {
@@ -31,5 +35,6 @@ func New(path string) (*Config, error) {
 		HTTPConifg: httpCfg,
 		PGConfig:   pgCfg,
 		JWTSecret:  os.Getenv(jwtSecret),
+		PassSecret: os.Getenv(passSecret),
 	}, nil
 }

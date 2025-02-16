@@ -36,6 +36,8 @@ func InfoHandler(logger *zap.SugaredLogger, infoService infoService) http.Handle
 			switch {
 			case errors.Is(err, repository.ErrUserNotFound):
 				errorJSONResponse(w, http.StatusNotFound, "user not found")
+			case errors.Is(err, repository.ErrNoInfo):
+				errorJSONResponse(w, http.StatusNotFound, "no info")
 			default:
 				errorJSONResponse(w, http.StatusInternalServerError, "internal error")
 			}

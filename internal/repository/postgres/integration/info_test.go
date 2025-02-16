@@ -67,7 +67,7 @@ func TestGetUserInfo(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
 			dsn := getDSN(t)
-			s, err := postgres.New(dsn)
+			s, err := postgres.New(dsn, "secret")
 			if err != nil {
 				t.Fatalf("failed to create storage: %v", err)
 			}
