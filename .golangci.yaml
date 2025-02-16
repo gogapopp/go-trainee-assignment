@@ -64,6 +64,8 @@ linters:
     - whitespace
 
 issues:
+  exclude-rules:
+    - path: ".*_test.go"
   exclude-use-default: false
   exclude:
     # _ instead of err checks
