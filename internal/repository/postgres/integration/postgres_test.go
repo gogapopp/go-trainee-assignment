@@ -11,32 +11,28 @@ import (
 )
 
 func getDSN(t *testing.T) string {
-	user := os.Getenv("POSTGRES_USER")
-	password := os.Getenv("POSTGRES_PASSWORD")
-	dbName := os.Getenv("POSTGRES_DB")
-	host := os.Getenv("POSTGRES_HOST")
-	port := os.Getenv("POSTGRES_PORT")
+	user := os.Getenv("DATABASE_USER")
+	password := os.Getenv("DATABASE_PASSWORD")
+	dbName := os.Getenv("DATABASE_NAME")
+	host := os.Getenv("DATABASE_HOST")
+	port := os.Getenv("DATABASE_PORT")
 
-	if user == "" || password == "" || dbName == "" || host == "" || port == "" {
-		envPath := "../../../../.env"
-
-		if ws := os.Getenv("GITHUB_WORKSPACE"); ws != "" {
-			envPath = filepath.Join(ws, ".env")
-		}
-
-		cfg, err := config.New(envPath)
-		if err != nil {
-			t.Fatalf("failed to load config: %v", err)
-		}
-
-		return cfg.PGConfig.DSN
+	if user != "" && password != "" && dbName != "" && host != "" && port != "" {
+		return fmt.Sprintf(
+			"postgres://%s:%s@%s:%s/%s?sslmode=disable",
+			user, password, host, port, dbName,
+		)
 	}
-	return fmt.Sprintf(
-		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		os.Getenv(user),
-		os.Getenv(password),
-		os.Getenv(host),
-		os.Getenv(port),
-		os.Getenv(dbName),
-	)
+
+	envPath := "../../../../.env"
+	if ws := os.Getenv("GITHUB_WORKSPACE"); ws != "" {
+		envPath = filepath.Join(ws, ".env")
+	}
+
+	cfg, err := config.New(envPath)
+	if err != nil {
+		t.Fatalf("failed to load config: %v", err)
+	}
+
+	return cfg.PGConfig.DSN
 }

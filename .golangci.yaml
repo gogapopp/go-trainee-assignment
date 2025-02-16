@@ -72,6 +72,9 @@ issues:
         - ineffassign
         - lll
         - nestif
+        - staticcheck
+        - copyloopvar
+        - whitespace
   exclude-use-default: false
   exclude:
     # _ instead of err checks
