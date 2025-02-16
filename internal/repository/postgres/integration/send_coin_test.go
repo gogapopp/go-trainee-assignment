@@ -1,4 +1,4 @@
-// package with integration tests for postgres repository
+// Package integration for postgres repository
 package intergration
 
 import (

@@ -1,4 +1,4 @@
-// package with integration tests for handlers
+// Package integration with integration tests for handlers
 package integration
 
 import (

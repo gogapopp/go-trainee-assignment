@@ -19,7 +19,7 @@ func (s *Storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, e
 	var userID int
 	err := s.DB.QueryRow(ctx,
 		"INSERT INTO users(username, password_hash) VALUES($1, $2) ON CONFLICT (username) DO NOTHING RETURNING id",
-		user.Username, string(hashedPassword),
+		user.Username, hashedPassword,
 	).Scan(&userID)
 	// user is created successfully
 	if err == nil {
