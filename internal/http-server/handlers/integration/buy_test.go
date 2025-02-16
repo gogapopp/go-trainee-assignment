@@ -114,7 +114,6 @@ func TestBuyItemHandler(t *testing.T) {
 				assert.Equal(t, tt.wantError, response["errors"])
 			}
 
-			// 5. Check coins and inventory for success case
 			if w.Code == http.StatusOK {
 				coins, err := getCurrentCoins(t, userReq.Username)
 				assert.NoError(t, err)
