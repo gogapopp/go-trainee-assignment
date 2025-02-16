@@ -39,7 +39,7 @@ func main() {
 		))
 	)
 	defer logger.Sync()
-	defer repository.Close(ctx)
+	defer repository.DB.Close(ctx)
 
 	if err := migrations.Up(); err != nil && err != migrate.ErrNoChange {
 		logger.Fatal(err)

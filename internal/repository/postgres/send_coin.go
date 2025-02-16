@@ -10,10 +10,10 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (s *storage) SendCoins(ctx context.Context, senderID int, req models.SendCoinRequest) error {
+func (s *Storage) SendCoins(ctx context.Context, senderID int, req models.SendCoinRequest) error {
 	const op = "internal.repository.postgres.send_coin.SendCoins"
 
-	tx, err := s.db.Begin(ctx)
+	tx, err := s.DB.Begin(ctx)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}

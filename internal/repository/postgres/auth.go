@@ -13,7 +13,7 @@ import (
 
 const bcryptCost = 12
 
-func (s *storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, error) {
+func (s *Storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, error) {
 	const op = "internal.repository.postgres.auth.AuthUser"
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcryptCost)
@@ -22,7 +22,7 @@ func (s *storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, e
 	}
 
 	var userID int
-	err = s.db.QueryRow(ctx,
+	err = s.DB.QueryRow(ctx,
 		"INSERT INTO users(username, password_hash) VALUES($1, $2) ON CONFLICT (username) DO NOTHING RETURNING id",
 		user.Username, string(hashedPassword),
 	).Scan(&userID)
@@ -36,7 +36,7 @@ func (s *storage) AuthUser(ctx context.Context, user models.AuthRequest) (int, e
 	}
 	// if user exists
 	var passwordHashFromDB string
-	err = s.db.QueryRow(ctx,
+	err = s.DB.QueryRow(ctx,
 		"SELECT id, password_hash FROM users WHERE username = $1", user.Username).
 		Scan(&userID, &passwordHashFromDB)
 	if err != nil {

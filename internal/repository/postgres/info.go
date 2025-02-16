@@ -7,18 +7,18 @@ import (
 	"github.com/gogapopp/go-trainee-assignment/internal/models"
 )
 
-func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoResponse, error) {
+func (s *Storage) GetUserInfo(ctx context.Context, userID int) (models.InfoResponse, error) {
 	const op = "internal.repository.postgres.info.GetUserInfo"
 
 	var info models.InfoResponse
 
-	err := s.db.QueryRow(ctx, "SELECT coins FROM users WHERE id = $1", userID).Scan(&info.Coins)
+	err := s.DB.QueryRow(ctx, "SELECT coins FROM users WHERE id = $1", userID).Scan(&info.Coins)
 	if err != nil {
 		return models.InfoResponse{}, fmt.Errorf("%s: %w", op, err)
 	}
 
 	// user inventory
-	rows, err := s.db.Query(ctx,
+	rows, err := s.DB.Query(ctx,
 		`SELECT i.name, ui.quantity FROM user_inventory ui
         JOIN items i ON ui.item_id = i.id
         WHERE ui.user_id = $1`,
@@ -38,7 +38,7 @@ func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoRespo
 	}
 
 	// transactions when user is receiver
-	receivedRows, err := s.db.Query(ctx,
+	receivedRows, err := s.DB.Query(ctx,
 		`SELECT u.username, uch.amount FROM user_coin_history uch
 	    JOIN users u ON uch.from_user_id = u.id
 	    WHERE uch.to_user_id = $1`,
@@ -58,7 +58,7 @@ func (s *storage) GetUserInfo(ctx context.Context, userID int) (models.InfoRespo
 	}
 
 	// transactions when user is sender
-	sentRows, err := s.db.Query(ctx,
+	sentRows, err := s.DB.Query(ctx,
 		`SELECT u.username, uch.amount FROM user_coin_history uch
 	    JOIN users u ON uch.to_user_id = u.id
 		WHERE uch.from_user_id = $1`,

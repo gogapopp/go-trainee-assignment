@@ -9,10 +9,10 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (s *storage) BuyItem(ctx context.Context, userID int, itemName string) error {
+func (s *Storage) BuyItem(ctx context.Context, userID int, itemName string) error {
 	const op = "internal.repository.postgres.buy.BuyItem"
 
-	tx, err := s.db.Begin(ctx)
+	tx, err := s.DB.Begin(ctx)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
