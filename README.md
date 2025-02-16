@@ -17,7 +17,7 @@ docker-compose up --build
 ## Остановить приложение
 
 ```bash
-docker-compose-down
+docker-compose down
 ```
 ## Документация запросов в постмане
 
